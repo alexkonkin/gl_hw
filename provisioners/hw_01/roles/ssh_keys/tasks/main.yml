@@ -19,4 +19,4 @@
   become_user: vagrant
   become: true
   local_action: shell sshpass -p {{ password }} ssh-copy-id -o stricthostkeychecking=no -i /home/vagrant/.ssh/id_rsa.pub vagrant@{{ item }}
-  with_items: "{{ groups['nodes'] }}"
+  with_items: "{{ groups['all_hosts'] }}"
