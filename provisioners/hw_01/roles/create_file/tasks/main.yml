@@ -1,0 +1,7 @@
+---
+- name: Create file
+  become_user: root
+  file:
+    state: touch
+    path: /tmp/delete_me.txt
+

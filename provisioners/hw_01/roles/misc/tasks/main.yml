@@ -1,0 +1,16 @@
+---
+- name: Remove original hosts file
+  become_user: root
+  become: true
+  become_method: sudo
+  file:
+    state: absent
+    path: /etc/hosts
+
+- name: Update hosts file
+  become_user: root
+  become: true
+  become_method: sudo
+  copy:
+    src: hosts
+    dest: /etc/hosts

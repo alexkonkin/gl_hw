@@ -1,0 +1,22 @@
+---
+- name: Install sshpass package
+  apt: name={{item}} state=present
+  with_items:
+    - sshpass
+
+- name: Check if ssh key exists
+  stat:
+    path: /home/vagrant/.ssh/id_rsa
+  register: ssh_key
+
+- name: Generate sshkey for vagrant user
+  become_user: vagrant
+  become: true
+  command: bash -c "ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -P ''"
+  when: ssh_key.stat.exists == False
+
+- name: Register sshkey
+  become_user: vagrant
+  become: true
+  local_action: shell sshpass -p {{ password }} ssh-copy-id -o stricthostkeychecking=no -i /home/vagrant/.ssh/id_rsa.pub vagrant@{{ item }}
+  with_items: "{{ groups['nodes'] }}"

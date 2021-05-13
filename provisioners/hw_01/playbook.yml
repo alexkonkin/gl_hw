@@ -1,0 +1,19 @@
+---
+- hosts: masters
+  become: yes
+  connection: local
+  roles:
+    - role: misc
+    - role: ssh_keys
+
+- hosts: nodes
+  become: yes
+  roles:
+    - role: misc
+    - role: ssh_misc
+
+- hosts: all_hosts
+  gather_facts: yes
+  roles:
+    - role: create_file
+    - role: get_version
